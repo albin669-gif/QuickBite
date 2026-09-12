@@ -1,6 +1,7 @@
 'use server';
 
 import { createClient } from '@/lib/supabase/server';
+import { getAppUrl } from '@/lib/supabase/config';
 import { redirect } from 'next/navigation';
 import type { UserRole, Profile } from '@/types/database.types';
 
@@ -112,10 +113,18 @@ export async function signUp(formData: FormData): Promise<AuthResult> {
 
   const supabase = await createClient();
 
+  const appUrl = getAppUrl();
   const { data, error } = await supabase.auth.signUp({
     email: email.trim(),
     password,
     options: {
+      emailRedirectTo: `${appUrl}/auth/callback?next=${encodeURIComponent(
+        targetRole === 'RESTAURANT_OWNER'
+          ? '/restaurant/dashboard'
+          : targetRole === 'DELIVERY_PARTNER'
+          ? '/driver/dashboard'
+          : '/'
+      )}`,
       data: {
         full_name: fullName.trim(),
         phone: phone ? phone.trim() : null,
@@ -167,7 +176,7 @@ export async function forgotPassword(formData: FormData): Promise<AuthResult> {
   }
 
   const supabase = await createClient();
-  const origin = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+  const origin = getAppUrl();
 
   const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
     redirectTo: `${origin}/reset-password`,

@@ -706,10 +706,10 @@ export async function getActiveRestaurantsWithStatus(
       query = query.lte('delivery_fee', params.maxDeliveryFee);
     }
 
-    // Wrap query with a 4s timeout to avoid 15s DNS stall in dev
+    // Wrap query with an 8s timeout to handle serverless cold starts gracefully
     const queryPromise = query;
     const timeoutPromise = new Promise<{ data: null; error: Error }>((_, reject) =>
-      setTimeout(() => reject(new Error('Database query timed out')), 4000)
+      setTimeout(() => reject(new Error('Database query timed out')), 8000)
     );
 
     const { data, error } = await Promise.race([queryPromise, timeoutPromise]);

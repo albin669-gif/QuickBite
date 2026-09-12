@@ -13,6 +13,9 @@ import {
   Sparkles,
   AlertTriangle,
   RotateCcw,
+  ChefHat,
+  PlusCircle,
+  ArrowRight,
 } from 'lucide-react';
 
 export default async function RestaurantsDirectoryPage({
@@ -336,6 +339,36 @@ export default async function RestaurantsDirectoryPage({
                   className="inline-flex items-center justify-center px-4 py-2 rounded-xl text-xs font-semibold bg-red-600 text-white hover:bg-red-700 transition"
                 >
                   <RotateCcw className="w-3.5 h-3.5 mr-1.5" /> Try Again
+                </Link>
+              </div>
+            </div>
+          ) : !hasActiveFilters ? (
+            <div className="bg-white rounded-3xl border border-stone-200 p-8 sm:p-12 text-center shadow-sm max-w-lg mx-auto space-y-4">
+              <div className="w-16 h-16 rounded-2xl bg-orange-100 text-orange-600 mx-auto flex items-center justify-center">
+                <ChefHat className="w-8 h-8" />
+              </div>
+              <h3 className="text-lg font-bold text-stone-900">Partner Kitchens Coming to Your Area</h3>
+              <p className="text-xs sm:text-sm text-stone-600 leading-relaxed max-w-sm mx-auto">
+                We are actively onboarding authentic restaurants and cloud kitchens. Are you a restaurant owner or chef looking to reach hungry customers?
+              </p>
+              <div className="pt-2 flex flex-col sm:flex-row justify-center gap-2.5">
+                <Link
+                  href="/restaurant/signup"
+                  className="inline-flex items-center justify-center px-5 py-2.5 rounded-xl text-xs font-bold bg-orange-600 text-white hover:bg-orange-700 shadow-md shadow-orange-600/20 transition"
+                >
+                  <PlusCircle className="w-4 h-4 mr-1.5" /> Register Your Restaurant
+                </Link>
+                <Link
+                  href="/restaurant/login"
+                  className="inline-flex items-center justify-center px-4 py-2.5 rounded-xl text-xs font-semibold bg-stone-100 text-stone-700 hover:bg-stone-200 transition"
+                >
+                  Partner Login <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
+                </Link>
+              </div>
+              <div className="pt-2 border-t border-stone-100 text-stone-400 text-[11px]">
+                Platform Administrator? Manage listings in the{' '}
+                <Link href="/admin/restaurants" className="text-orange-600 font-semibold hover:underline">
+                  Admin Portal
                 </Link>
               </div>
             </div>

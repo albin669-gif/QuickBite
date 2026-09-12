@@ -21,12 +21,19 @@ export function validateEnvironment(): EnvValidationResult {
   // Required Supabase Variables
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
     missing.push('NEXT_PUBLIC_SUPABASE_URL');
-  } else if (
-    isProduction &&
-    (process.env.NEXT_PUBLIC_SUPABASE_URL.includes('placeholder') ||
-      process.env.NEXT_PUBLIC_SUPABASE_URL.includes('example.com'))
-  ) {
-    errors.push('NEXT_PUBLIC_SUPABASE_URL contains placeholder domain in production.');
+  } else {
+    const rawUrl = process.env.NEXT_PUBLIC_SUPABASE_URL.trim();
+    if (
+      isProduction &&
+      (rawUrl.includes('placeholder') || rawUrl.includes('example.com'))
+    ) {
+      errors.push('NEXT_PUBLIC_SUPABASE_URL contains placeholder domain in production.');
+    }
+    if (rawUrl.includes('/rest/v1') || rawUrl.includes('/auth/v1')) {
+      warnings.push(
+        'NEXT_PUBLIC_SUPABASE_URL contains subpaths like /rest/v1 or /auth/v1. It has been auto-sanitized, but remove it from your Vercel settings.'
+      );
+    }
   }
 
   if (!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
